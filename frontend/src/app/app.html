@@ -18,20 +18,8 @@
       <div class="status-indicator" [ngClass]="serverConnected() ? 'status-online' : 'status-offline'">
         <span class="pulse-dot"></span>
         <span class="status-text">
-          {{ serverConnected() ? 'API Connected (Port ' + (metrics()?.port || '...') + ')' : 'Connecting to API...' }}
+          {{ serverConnected() ? 'API Connected' : 'Connecting to API...' }}
         </span>
-      </div>
-      
-      <!-- Metrics Quick Stats -->
-      <div class="quick-stats" *ngIf="metrics()">
-        <div class="stat-pill">
-          <span class="stat-label">Uptime:</span>
-          <span class="stat-value font-mono">{{ metrics()?.uptime }}s</span>
-        </div>
-        <div class="stat-pill">
-          <span class="stat-label">Requests:</span>
-          <span class="stat-value font-mono">{{ metrics()?.requestCount }}</span>
-        </div>
       </div>
     </div>
   </header>

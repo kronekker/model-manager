@@ -4,7 +4,7 @@
     
     <!-- Local Route Status Badge -->
     <div class="status-connection-badge" [ngClass]="serverConnected() ? 'badge-online' : 'badge-offline'">
-      {{ serverConnected() ? 'Telemetry Streaming' : 'Reconnecting...' }}
+      {{ serverConnected() ? 'Telemetry Streaming (Port ' + (metrics()?.port || '...') + ')' : 'Reconnecting...' }}
     </div>
   </div>
 
@@ -46,6 +46,11 @@
           <h3>Backend Telemetry</h3>
         </div>
         <ul class="telemetry-list">
+          <li>
+            <span class="text-muted">Server Port</span>
+            <span class="font-mono text-highlight" *ngIf="metrics()">{{ metrics()?.port }}</span>
+            <span class="font-mono text-highlight" *ngIf="!metrics()">--</span>
+          </li>
           <li>
             <span class="text-muted">Server Uptime</span>
             <span class="font-mono text-highlight" *ngIf="metrics()">{{ metrics()?.uptime }}s</span>
