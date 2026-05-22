@@ -1,0 +1,92 @@
+<div class="status-container">
+  <div class="section-title-wrapper">
+    <h2 class="section-title">Telemetry & System Metrics</h2>
+    
+    <!-- Local Route Status Badge -->
+    <div class="status-connection-badge" [ngClass]="serverConnected() ? 'badge-online' : 'badge-offline'">
+      {{ serverConnected() ? 'Telemetry Streaming' : 'Reconnecting...' }}
+    </div>
+  </div>
+
+  <div class="status-layout-grid">
+    <!-- Left Column: Metrics Gauges -->
+    <div class="metrics-column">
+      <!-- CPU Card -->
+      <div class="telemetry-card glass-panel">
+        <div class="card-header-simple">
+          <h3>CPU Usage</h3>
+          <span class="stat-number font-mono" *ngIf="metrics()">{{ metrics()?.cpuUsage }}%</span>
+          <span class="stat-number font-mono" *ngIf="!metrics()">--%</span>
+        </div>
+        <div class="gauge-bar-container">
+          <div class="gauge-bar-fill cpu-fill" [style.width.%]="metrics()?.cpuUsage || 0"></div>
+        </div>
+        <p class="gauge-caption text-muted">Averages fluctuating based on loop cycles</p>
+      </div>
+
+      <!-- Memory Card -->
+      <div class="telemetry-card glass-panel">
+        <div class="card-header-simple">
+          <h3>Memory Load (RAM)</h3>
+          <span class="stat-number font-mono" *ngIf="metrics()">{{ metrics()?.memoryUsage }}%</span>
+          <span class="stat-number font-mono" *ngIf="!metrics()">--%</span>
+        </div>
+        <div class="gauge-bar-container">
+          <div class="gauge-bar-fill ram-fill" [style.width.%]="metrics()?.memoryUsage || 0"></div>
+        </div>
+        <div class="ram-details" *ngIf="metrics()">
+          <span class="text-muted">Free: {{ metrics()?.freeMemory }}</span>
+          <span class="text-muted">Total: {{ metrics()?.totalMemory }}</span>
+        </div>
+      </div>
+
+      <!-- Quick Metrics Telemetry -->
+      <div class="telemetry-card glass-panel">
+        <div class="card-header-simple">
+          <h3>Backend Telemetry</h3>
+        </div>
+        <ul class="telemetry-list">
+          <li>
+            <span class="text-muted">Server Uptime</span>
+            <span class="font-mono text-highlight" *ngIf="metrics()">{{ metrics()?.uptime }}s</span>
+            <span class="font-mono text-highlight" *ngIf="!metrics()">--</span>
+          </li>
+          <li>
+            <span class="text-muted">Total HTTP Requests</span>
+            <span class="font-mono text-highlight" *ngIf="metrics()">{{ metrics()?.requestCount }}</span>
+            <span class="font-mono text-highlight" *ngIf="!metrics()">--</span>
+          </li>
+          <li>
+            <span class="text-muted">Server System Time</span>
+            <span class="font-mono text-highlight" *ngIf="metrics()">{{ metrics()?.serverTime | date:'HH:mm:ss (MMM d)' }}</span>
+            <span class="font-mono text-highlight" *ngIf="!metrics()">--</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Right Column: Terminal Logs -->
+    <div class="logs-column">
+      <div class="logs-card glass-panel">
+        <div class="logs-header">
+          <div class="terminal-dots">
+            <span class="dot-red"></span>
+            <span class="dot-yellow"></span>
+            <span class="dot-green"></span>
+          </div>
+          <span class="logs-title font-mono">active http + stdout stream</span>
+        </div>
+        <div class="logs-body font-mono">
+          <div class="log-stream-empty" *ngIf="!metrics() || metrics()?.logs?.length === 0">
+            No backend logging records found. Listening for stream activity...
+          </div>
+          <div class="log-row" *ngFor="let logMsg of metrics()?.logs" [ngClass]="getLogLevelClass(logMsg.level)">
+            <span class="log-time">[{{ logMsg.timestamp | date:'HH:mm:ss' }}]</span>
+            <span class="log-badge font-mono">{{ logMsg.level.toUpperCase() }}</span>
+            <span class="log-message">{{ logMsg.message }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

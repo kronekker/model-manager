@@ -1,0 +1,44 @@
+<div class="dashboard-wrapper">
+  <!-- Top Navigation Header -->
+  <header class="dashboard-header glass-panel">
+    <div class="header-left">
+      <div class="header-logo" routerLink="/">
+        <span class="logo-accent">KRONEKKER</span>
+        <span class="logo-thin">console</span>
+      </div>
+      
+      <nav class="header-nav">
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-link">Home</a>
+        <a routerLink="/status" routerLinkActive="active" class="nav-link">Status</a>
+      </nav>
+    </div>
+    
+    <div class="header-status">
+      <!-- Live API Connection Glow Badge -->
+      <div class="status-indicator" [ngClass]="serverConnected() ? 'status-online' : 'status-offline'">
+        <span class="pulse-dot"></span>
+        <span class="status-text">
+          {{ serverConnected() ? 'API Connected (Port ' + (metrics()?.port || '...') + ')' : 'Connecting to API...' }}
+        </span>
+      </div>
+      
+      <!-- Metrics Quick Stats -->
+      <div class="quick-stats" *ngIf="metrics()">
+        <div class="stat-pill">
+          <span class="stat-label">Uptime:</span>
+          <span class="stat-value font-mono">{{ metrics()?.uptime }}s</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-label">Requests:</span>
+          <span class="stat-value font-mono">{{ metrics()?.requestCount }}</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Router Outlet Container -->
+  <main class="dashboard-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>
+

@@ -1,0 +1,112 @@
+<div class="home-container">
+  <!-- Hero Section -->
+  <section class="hero-card glass-panel">
+    <h1>TypeScript Monorepo Boilerplate</h1>
+    <p class="subtitle text-secondary">
+      A type-safe boilerplate combining Angular standalone components and a Node.js Express server.
+    </p>
+    <div class="hero-actions">
+      <a routerLink="/status" class="btn btn-primary">
+        View Server Telemetry →
+      </a>
+      <a href="https://github.com/google/kronekker" target="_blank" class="btn btn-secondary">
+        Github Repository
+      </a>
+    </div>
+  </section>
+
+  <!-- Technical Summary Cards -->
+  <section class="features-grid">
+    <div class="feature-card glass-panel">
+      <div class="feature-icon font-mono">1</div>
+      <h3>Shared Types Package</h3>
+      <p class="text-muted">
+        Located in <code class="font-mono">shared/</code>. Export data models directly. Edits compile instantly across both workspaces.
+      </p>
+    </div>
+
+    <div class="feature-card glass-panel">
+      <div class="feature-icon font-mono">2</div>
+      <h3>Express API Server</h3>
+      <p class="text-muted">
+        Located in <code class="font-mono">backend/</code>. Built on Express and Node. Serves API endpoints and hosts the built SPA in production.
+      </p>
+    </div>
+
+    <div class="feature-card glass-panel">
+      <div class="feature-icon font-mono">3</div>
+      <h3>Angular SPA Client</h3>
+      <p class="text-muted">
+        Located in <code class="font-mono">frontend/</code>. A standalone client using modern features, HMR, and environment-synced dev server proxying.
+      </p>
+    </div>
+  </section>
+
+  <!-- Live Boilerplate Demonstration (CRUD Example) -->
+  <section class="demo-section grid-split">
+    <!-- CRUD List Panel -->
+    <div class="demo-card glass-panel">
+      <div class="demo-header">
+        <h3>Active Database Resources</h3>
+        <span class="badge badge-info font-mono" *ngIf="!isLoading()">{{ items().length }} items</span>
+      </div>
+      
+      <div class="demo-body">
+        <div class="loading-state" *ngIf="isLoading()">
+          Retrieving items from API...
+        </div>
+        
+        <div class="empty-state text-muted" *ngIf="!isLoading() && items().length === 0">
+          No resources created yet. Use the form to add one.
+        </div>
+
+        <ul class="resources-list" *ngIf="!isLoading() && items().length > 0">
+          <li class="resource-item glass-panel" *ngFor="let item of items()">
+            <div class="resource-details">
+              <h4>{{ item.name }}</h4>
+              <p class="text-secondary">{{ item.description }}</p>
+              <span class="resource-time text-muted font-mono">{{ item.createdAt | date:'short' }}</span>
+            </div>
+            <button class="btn-delete-resource" (click)="onDeleteItem(item.id)" title="Delete Resource">×</button>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Create Resource Panel -->
+    <div class="demo-card glass-panel">
+      <div class="demo-header">
+        <h3>Create Resource Item</h3>
+      </div>
+      
+      <form (submit)="onCreateItem()" class="demo-form">
+        <div class="form-group">
+          <label for="itemName">Resource Name</label>
+          <input 
+            id="itemName"
+            type="text" 
+            placeholder="e.g. UserService" 
+            [value]="newItemName()"
+            (input)="newItemName.set($any($event.target).value)"
+            required 
+            autocomplete="off">
+        </div>
+        
+        <div class="form-group">
+          <label for="itemDesc">Description</label>
+          <textarea 
+            id="itemDesc"
+            rows="3" 
+            placeholder="Describe what this resource provides..." 
+            [value]="newItemDesc()"
+            (input)="newItemDesc.set($any($event.target).value)"
+            required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary" [disabled]="isSaving() || !newItemName().trim() || !newItemDesc().trim()">
+          {{ isSaving() ? 'Saving...' : 'Add Item' }}
+        </button>
+      </form>
+    </div>
+  </section>
+</div>
