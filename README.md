@@ -45,57 +45,6 @@ App titles, subtitles, and logo image usage can be toggled without recompiling t
 
 ## 🚀 Development & Build Commands
 
-All orchestration is handled seamlessly via npm scripts at the project root.
+See [getting-started.md](./getting-started.md). 
 
-### Running the Dev Server
-To start concurrent hot-reloading development servers for both the Angular frontend and the Express backend:
 
-```bash
-npm install
-npm run dev
-```
-
-**Custom Ports:** By default, the backend runs on port `3000` and the frontend on `4200` (which automatically proxies `/api` requests to `3000`). To run on a custom port, simply prepend the `PORT` environment variable:
-```bash
-PORT=8080 npm run dev
-```
-
-### Production Build & Launch
-To compile the shared types, build the Angular client into optimized static assets, compile the Express server, and launch the unified production server as a single Node process:
-
-```bash
-npm run build
-npm run start
-```
-The application will then be live at `http://localhost:3000` (or your defined `PORT`), with the Express server intelligently serving both the API endpoints and the static frontend SPA.
-
-### Running Tests
-Testing is broken down by workspace. You can execute tests from the root directory by targeting specific workspaces:
-
-**Frontend Testing (Angular/Vitest):**
-```bash
-npm run test -w frontend
-```
-
-**Backend Testing:**
-*(Requires a test runner like Vitest or Jest to be configured in the backend workspace)*
-```bash
-npm run test -w backend
-```
-
----
-
-## ⚡ Node.js vs Bun
-
-This boilerplate has been engineered to run perfectly under both standard Node.js and the ultra-fast Bun runtime. 
-
-Curious which one you should choose for your team's architecture? Read our detailed breakdown:
-[**Architectural Analysis: Node.js vs Bun**](./bun-or-node.md)
-
----
-
-## 🛠 Extension Guide
-
-1. **Updating Types:** Add definitions to `shared/src/index.ts` and run `npm run build -w shared`.
-2. **Adding API Routes:** Add new Express endpoints to `backend/src/server.ts`.
-3. **Creating UI Components:** Use `kbp-` classes from `frontend/src/styles.css` for instant visual consistency when building new Angular components.

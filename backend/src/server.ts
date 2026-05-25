@@ -2,10 +2,10 @@ import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import path from 'path';
 import os from 'os';
-import { 
-  LogMessage, 
-  SystemMetrics, 
-  ApiResponse 
+import {
+  LogMessage,
+  SystemMetrics,
+  ApiResponse
 } from 'shared';
 
 const app = express();
@@ -26,12 +26,12 @@ function log(level: 'info' | 'warn' | 'error', message: string) {
   const timestamp = new Date().toISOString();
   const id = Math.random().toString(36).substring(2, 9);
   const logMsg: LogMessage = { id, timestamp, level, message };
-  
+
   logs.unshift(logMsg);
   if (logs.length > 50) {
     logs.pop();
   }
-  
+
   const color = level === 'error' ? '\x1b[31m' : level === 'warn' ? '\x1b[33m' : '\x1b[32m';
   console.log(`${color}[${timestamp}] [${level.toUpperCase()}] ${message}\x1b[0m`);
 }
@@ -50,8 +50,6 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
 // --- API ROUTES ---
 
-
-
 // GET /api/metrics
 // This endpoint exists to provide sample telemetry data (hence the 'mockCpu' below). 
 // It demonstrates backend visibility and live data streaming to the Status component on the frontend.
@@ -59,9 +57,9 @@ app.get('/api/metrics', (req: Request, res: Response<ApiResponse<SystemMetrics>>
   const totalMemBytes = os.totalmem();
   const freeMemBytes = os.freemem();
   const usedMemBytes = totalMemBytes - freeMemBytes;
-  
+
   const memoryUsage = Math.round((usedMemBytes / totalMemBytes) * 100);
-  
+
   // CPU Usage mock fluctuation
   const seconds = new Date().getSeconds();
   const mockCpu = Math.round(15 + Math.sin(seconds / 5) * 10 + Math.random() * 5);
@@ -93,7 +91,7 @@ app.get('*', (req: Request, res: Response) => {
   if (req.path.startsWith('/api')) {
     return res.status(404).json({ success: false, error: 'API route not found' });
   }
-  
+
   const indexHtmlFile = path.join(frontendDistPath, 'index.html');
   res.sendFile(indexHtmlFile, (err: any) => {
     if (err) {

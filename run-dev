@@ -1,0 +1,30 @@
+#!/bin/bash
+
+PORT=${PORT:-3001}
+RUNTIME=${RUNTIME:-bun}
+
+# Parse optional arguments
+while [[ "$#" -gt 0 ]]; do
+    case $1 in
+        -p|--port) PORT="$2"; shift ;;
+        --bun) RUNTIME="bun" ;;
+        --node) RUNTIME="node" ;;
+        -h|--help) 
+            echo "Usage: ./run-dev [options]"
+            echo "Options:"
+            echo "  -p, --port <port>   Set the port (default: 3000)"
+            echo "  --bun               Use bun runtime"
+            echo "  --node              Use node runtime (default)"
+            exit 0
+            ;;
+    esac
+    shift
+done
+
+echo "Starting dev server with $RUNTIME on port $PORT..."
+
+if [ "$RUNTIME" = "bun" ]; then
+    PORT=$PORT npm run dev:bun
+else
+    PORT=$PORT npm run dev
+fi

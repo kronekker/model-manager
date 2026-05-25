@@ -8,10 +8,10 @@
     "frontend"
   ],
   "scripts": {
-    "dev": "concurrently --kill-others \"npm run dev -w backend\" \"npm run dev -w frontend\"",
-    "dev:bun": "concurrently \"bun run --filter=backend dev:bun\" \"npm run dev -w frontend\"",
+    "dev": "concurrently \"npm run dev -w backend\" \"npm run dev -w frontend\"",
+    "dev:bun": "concurrently \"bun run --filter=backend dev:bun\" \"bun run --filter=frontend dev\"",
     "build": "npm run build -w shared && npm run build -w frontend && npm run build -w backend",
-    "build:bun": "bun run --filter=shared build && bun run --filter=frontend build",
+    "build:bun": "bun run --filter=shared build && bun run --filter=frontend build && bun run --filter=backend build",
     "start": "npm run start -w backend",
     "start:bun": "bun run --filter=backend start:bun"
   },
