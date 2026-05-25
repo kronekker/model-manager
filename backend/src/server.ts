@@ -53,6 +53,8 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
 
 // GET /api/metrics
+// This endpoint exists to provide sample telemetry data (hence the 'mockCpu' below). 
+// It demonstrates backend visibility and live data streaming to the Status component on the frontend.
 app.get('/api/metrics', (req: Request, res: Response<ApiResponse<SystemMetrics>>) => {
   const totalMemBytes = os.totalmem();
   const freeMemBytes = os.freemem();

@@ -86,11 +86,23 @@ Take a quick look at these files; they serve as a manual for human developers an
 - **`skills/01-architecture.md`**: Enforces the use of the shared monorepo types and standalone components.
 - **`skills/02-ui-styling.md`**: Dictates the use of the global `kbp-` glassmorphic CSS classes (so the AI doesn't generate inline styles or rogue CSS).
 - **`skills/03-complex-components.md`**: Mandates the use of AG Grid and Apache ECharts for data presentation, complete with theming requirements.
+- **`skills/04-creating-components.md`**: Defines the standard procedure for generating new components, routing, and updating the navigation bar.
 
-### How to use them
-When prompting your AI agent to build a new feature, explicitly point it to the relevant skill files. 
+### How to Use Them with AI Agents
+Because different AI harnesses (like Cursor, GitHub Copilot, or Gemini) consume context differently, the best way to ensure the AI follows the project's standards is to explicitly tell it to read the `skills/` directory before writing any code.
 
-**Example AI Prompt:**
-> *"I need a new page for managing User Accounts. Before you begin, please read `skills/01-architecture.md` and `skills/02-ui-styling.md`. Define a `User` interface in the shared workspace, create a backend endpoint to return mock users, and then build the Angular standalone component using the `kbp-` classes mandated in the skills file."*
+#### The "Copy & Paste" Universal Prefix
+For major features, or if you aren't sure which specific files apply, simply prepend this prefix to your request:
 
-By providing these simple file constraints within your prompt, the AI will perfectly match the boilerplate's premium aesthetic and strict type-safe architecture on its very first try!
+> *"Before you begin this task, please read all the markdown files in the `skills/` directory to understand the strict architectural constraints, styling guidelines, and component generation procedures for this repository. Once you have ingested these rules, please complete the following task: [YOUR REQUEST HERE]"*
+
+#### Specific Use-Case Examples
+If you prefer to be targeted, you can point the agent to specific skill files based on what you need.
+
+**Example 1: Creating a Full-Stack Feature**
+> *"I need a new page for managing User Accounts. Please read `skills/01-architecture.md` and `skills/04-creating-components.md`. Define a `User` interface in the shared workspace, create a backend endpoint to return mock users, and generate the new page in the frontend (including updating the router and navigation bar)."*
+
+**Example 2: Adding a Complex Data Table**
+> *"I need to display server logs in a grid on the status page. Please read `skills/02-ui-styling.md` and `skills/03-complex-components.md` before starting. Ensure you use AG Grid with the `ag-theme-quartz-dark` theme, and style the container using the global `kbp-` classes."*
+
+By providing these simple file constraints within your prompt, the AI will should the boilerplate's premium aesthetic and strict type-safe architecture, across your applications based on this template repo.

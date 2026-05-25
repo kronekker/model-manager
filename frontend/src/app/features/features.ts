@@ -11,7 +11,7 @@ ModuleRegistry.registerModules([AllCommunityModule]);
   selector: 'app-status-badge',
   standalone: true,
   imports: [CommonModule],
-  template: `<span class="kbp-badge" [ngClass]="getBadgeClass()" style="margin-top: 4px;">{{ value }}</span>`,
+  template: `<span class="kbp-badge" [ngClass]="getBadgeClass()">{{ value }}</span>`,
 })
 export class StatusBadgeCellRenderer {
   value: string = '';
