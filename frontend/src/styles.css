@@ -282,11 +282,13 @@ select:focus,
   color: var(--primary-lighter);
   gap: 1rem;
 }
+
 .kbp-banner.banner-warning {
   background: rgba(var(--warning-rgb), 0.1);
   border-color: rgba(var(--warning-rgb), 0.3);
   color: var(--warning-lighter);
 }
+
 .kbp-banner.banner-danger {
   background: rgba(var(--danger-rgb), 0.1);
   border-color: rgba(var(--danger-rgb), 0.3);
@@ -303,12 +305,14 @@ select:focus,
   border-radius: 99px;
   border: 1px solid var(--glass-border);
 }
+
 .kbp-nav a {
   color: var(--text-secondary);
   text-decoration: none;
   font-weight: 500;
   transition: var(--transition-smooth);
 }
+
 .kbp-nav a:hover,
 .kbp-nav a.active {
   color: var(--text-primary);
@@ -319,7 +323,6 @@ select:focus,
   display: flex;
   flex-direction: column;
   padding-bottom: 4rem;
-  max-width: 1200px;
   margin: 0 auto;
 }
 
