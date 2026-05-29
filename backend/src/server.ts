@@ -231,8 +231,8 @@ app.post('/api/apply_config', async (req: Request, res: Response<ApiResponse<App
     log('info', 'Executing systemctl --user daemon-reload...');
     await execPromise('systemctl --user daemon-reload');
 
-    log('info', 'Executing systemctl --user restart llama-server.service...');
-    await execPromise('systemctl --user restart llama-server.service');
+    log('info', 'Executing systemctl --user restart kron-llama-server.service...');
+    await execPromise('systemctl --user restart kron-llama-server.service');
 
     log('info', 'Service restarted successfully!');
     res.json({
