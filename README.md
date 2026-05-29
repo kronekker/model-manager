@@ -1,50 +1,89 @@
-# Kronekker TypeScript Boilerplate
+# Local Model Manager
 
-Welcome to the Kronekker TypeScript Boilerplate! This project is designed as the ultimate starting point for rapidly building and deploying modern, full-stack web applications. 
+Local Model Manager is a unified, high-performance monorepo application designed to organize and configure local LLM engines running in `llama.cpp`. 
 
-Our goal is to eliminate setup friction by providing a **unified frontend and backend architecture** that shares everything from TypeScript definitions to automated build commands, all while enforcing a gorgeous, standardized design system right out of the box.
-
----
-
-## 🎯 Project Goals & Architecture
-
-This boilerplate utilizes an npm workspace (monorepo) structure containing three integrated layers:
-
-1. **Frontend**: An Angular Single Page Application (SPA) using modern Standalone Components and Signals.
-2. **Backend**: A Node.js Express API server written entirely in TypeScript.
-3. **Shared**: A dedicated package for TypeScript models and interfaces shared directly between the frontend and backend.
-
-By unifying these environments, a developer can define an interface in the `shared` package (e.g., `ServerMetrics`), implement the API endpoint returning that type in the `backend`, and safely consume it in the `frontend`—knowing that any breaking change will instantly trigger compilation errors across the entire stack.
-
-This shared boundary establishes a strict, verifiable contract across the stack. For developers, it eliminates integration guesswork by surfacing payload mismatches as compile-time errors rather than runtime bugs. For AI coding agents, these centralized definitions provide reliable, cross-stack context, allowing them to confidently orchestrate and verify full-stack features automatically. For smaller projects, this overhead might seem unnecessary, but for larger projects with a team of developers, it can save a lot of time and effort, and makes inspecting code and seeing type definitions easier through intelligent IDEs. Furthermore, the use of an npm workspace allows for seamless management of dependencies across the entire stack.    
+It enables developers to seamlessly scan cached GGUF quantization weights, query the Hugging Face Hub for popular trending repositories, inspect quantization files (including multimodal model setups), and dynamically modify system runtime execution parameters through local shell script updates and `systemd` service restarts.
 
 ---
 
-## ✨ Standardized Features out of the Box
+## 🎯 Architecture
 
-Instead of building from absolute zero, this boilerplate comes pre-configured with industry-standard tooling and a premium design aesthetic.
+The project is structured as an npm workspaces monorepo:
 
-### 1. The `kbp-` Design System
-To ensure strict CSS isolation and visual consistency, this boilerplate implements a global UI kit utilizing the **Kronekker Boilerplate Prefix (`kbp-`)**. 
-- All fundamental components (buttons, input fields, badges, cards, and banners) are universally styled using `kbp-*` classes. 
-- You can preview the entire design system by navigating to the **UI Kit (`/style`)** route in the running application.
-
-### 2. Complex Data Grids (AG Grid)
-We have fully integrated and themed **AG Grid** (`ag-grid-community`, `ag-grid-angular`) using a modern dark-mode quartz theme. The boilerplate includes a working example of a complex grid featuring custom Angular cell renderers, value formatters, and dynamic CSS styling logic based on cell values.
-
-### 3. Interactive Charting (Apache ECharts)
-For robust data visualization, **ngx-echarts** is pre-configured. A working example of a smooth, responsive, gradient-filled area chart is provided on the Features page, specifically styled to match the dark glassmorphic design system.
-
-### 4. Live Server Telemetry Dashboard
-A pre-built Status Dashboard is included which polls the backend API for real-time telemetry (CPU usage, Memory load, active HTTP requests, and server uptime) using Angular Signals and RxJS intervals, displaying the data through custom CSS gauges and a simulated terminal stream.
-
-### 5. Runtime Branding Configuration
-App titles, subtitles, and logo image usage can be toggled without recompiling the application by simply editing the `public/config.json` file. 
+1. **Shared Package (`shared`)**: Defined in `shared/`. Holds common TypeScript interfaces (`CachedModel`, `HFSearchModel`, `ModelInspectData`, `SystemMetrics`) enforcing strict API contracts between frontend and backend.
+2. **Backend Server (`backend`)**: Defined in `backend/`. An Express API server (supporting Node.js or Bun) that coordinates system commands and reads/writes the runner script. Hugging Face search and cache scans are delegated to a self-contained child-process Python helper `hf_helper.py` using the native `huggingface_hub` Python package.
+3. **Frontend Client (`frontend`)**: Defined in `frontend/`. A premium dark glassmorphic single-page dashboard designed in Angular using standalone components, Signals state management, and highly optimized AG Grid tables.
 
 ---
 
-## 🚀 Development & Build Commands
+## ⚡ Prerequisite Installation
 
-See [getting-started.md](./getting-started.md). 
+Before running the application, make sure your workspace dependencies are fully installed:
 
+```bash
+# Using standard Node.js/npm
+npm install
 
+# Or using the ultra-fast Bun runtime
+bun install
+```
+
+---
+
+## 🚀 Execution & Development Commands
+
+This monorepo supports concurrent hot reloading for zero-latency development.
+
+### 1. Running in Development Mode
+Launches the Express API server (defaulting to port `3000`) and the Angular development server (port `4200` with hot module replacement) concurrently.
+
+* **Standard (Node.js)**
+  ```bash
+  npm run dev
+  ```
+* **Accelerated (Bun)**
+  ```bash
+  npm run dev:bun
+  ```
+
+*To specify a custom port for the API server, prepend the `PORT` variable:*
+```bash
+PORT=3001 npm run dev
+PORT=3001 npm run dev:bun
+```
+
+### 2. Building the Project
+Compiles the shared types package, builds the Angular production bundle, and compiles the Express TypeScript files into production JavaScript.
+
+* **Standard (Node.js)**
+  ```bash
+  npm run build
+  ```
+* **Accelerated (Bun)**
+  ```bash
+  npm run build:bun
+  ```
+
+### 3. Running in Production
+Serves the unified, compiled backend API endpoints and static frontend SPA assets out of a single process.
+
+* **Standard (Node.js)**
+  ```bash
+  npm run start
+  ```
+* **Accelerated (Bun)**
+  ```bash
+  npm run start:bun
+  ```
+
+---
+
+## 📂 Core Monorepo Map
+
+* `shared/src/index.ts` - Shared TS Interfaces.
+* `backend/src/server.ts` - Express router handling cache, searches, previews, and systemd reloads.
+* `backend/src/hf_helper.py` - Low-level Python script calling `scan_cache_dir` and `HfApi`.
+* `frontend/src/app/home/` - Dashboard HTML layout and Angular controller logic.
+* `frontend/src/app/api.service.ts` - API HttpClient streams.
+* `getting-started.md` - Technical setup walkthrough guide.
+* `skills/` - Architectural guidelines for monorepo styling, grids, and UI kit elements.
